@@ -71,7 +71,7 @@ app.get('/fetchDealers', async (req, res) => {
 app.get('/fetchDealers/:state', async (req, res) => {
 //Write your code here
   try{
-    const state = req.params.state.toUpperCase();
+    const state = req.params.state;
     const dealers = await Dealerships.find({state});
     res.json(dealers);
   } catch (error) {
@@ -83,11 +83,12 @@ app.get('/fetchDealers/:state', async (req, res) => {
 app.get('/fetchDealer/:id', async (req, res) => {
 //Write your code here
   try {
-    const dealerId = parseInt(req.params.id);
-    const dealer = await Dealerships.find({id: dealerId});
+    const dealerId = parseInt(req.params.id, 10);
+    const dealer = await Dealerships.findOne({id: dealerId});
     if (!dealer) {
       res.status(404).json({ error: 'Dealership not found' });
     }
+    res.json(dealer);
   } catch (error) {
     res.status(500).json({ error: 'Error fetching documents' });
   }
